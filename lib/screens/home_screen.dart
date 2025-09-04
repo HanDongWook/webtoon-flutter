@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:webtoon_flutter/models/webtoon_model.dart';
+import 'package:webtoon_flutter/services/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +19,15 @@ class HomeScreen extends StatelessWidget {
         foregroundColor: Colors.green,
         centerTitle: true,
         shadowColor: Colors.black,
+      ),
+      body: FutureBuilder(
+        future: webtoons,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Text("There is Data");
+          }
+          return Text("Loading");
+        },
       ),
     );
   }
