@@ -51,7 +51,16 @@ class _DetailScreenState extends State<DetailScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 2,
-        title: Text(widget.title, style: TextStyle(fontSize: 26)),
+        title: Hero(
+          tag: "${widget.title}${widget.id}",
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              widget.title,
+              style: TextStyle(fontSize: 26, color: Colors.green),
+            ),
+          ),
+        ),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         foregroundColor: Colors.green,

@@ -26,6 +26,17 @@ class WebtoonWidget extends StatelessWidget {
       child: Column(
         children: [
           Hero(
+            tag: "$title$id",
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 22, color: Colors.green),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          Hero(
             tag: id,
             child: Container(
               width: 250,
@@ -43,8 +54,6 @@ class WebtoonWidget extends StatelessWidget {
               child: Image.network(thumb),
             ),
           ),
-          SizedBox(height: 10),
-          Text(title, style: TextStyle(fontSize: 22)),
         ],
       ),
     );
