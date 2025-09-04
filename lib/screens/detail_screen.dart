@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webtoon_flutter/models/webtoon_detail_model.dart';
 import 'package:webtoon_flutter/models/webtoon_episode_model.dart';
 import 'package:webtoon_flutter/services/api_service.dart';
+import 'package:webtoon_flutter/sharedPreferences/SharedPreferencesHelper.dart';
 import 'package:webtoon_flutter/widgets/episode_widget.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -21,12 +22,27 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  bool isLiked = false;
 
   @override
   void initState() {
     super.initState();
     webtoon = ApiService.getToonById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
+    initLikedStatus();
+  }
+
+  Future<void> initLikedStatus() async {
+    setState(() {
+      isLiked = SharedPreferencesHelper.isToonLiked(widget.id);
+    });
+  }
+
+  void onLikeTap() async {
+    setState(() {
+      isLiked = !isLiked;
+    });
+    await SharedPreferencesHelper.toggleLike(widget.id, !isLiked);
   }
 
   @override
@@ -41,6 +57,12 @@ class _DetailScreenState extends State<DetailScreen> {
         foregroundColor: Colors.green,
         centerTitle: true,
         shadowColor: Colors.black,
+        actions: [
+          IconButton(
+            onPressed: onLikeTap,
+            icon: Icon(isLiked ? Icons.favorite : Icons.favorite_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
