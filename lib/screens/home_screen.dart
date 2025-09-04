@@ -24,19 +24,49 @@ class HomeScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                var webtoon = snapshot.data![index];
-                return Text(webtoon.title);
-              },
-              separatorBuilder: (context, index) => SizedBox(width: 20),
+            return Column(
+              children: [
+                SizedBox(height: 50),
+                Expanded(child: makeList(snapshot)),
+              ],
             );
           }
           return Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      itemCount: snapshot.data!.length,
+      itemBuilder: (context, index) {
+        var webtoon = snapshot.data![index];
+        return Column(
+          children: [
+            Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 5,
+                    offset: Offset(10, 10),
+                    color: Colors.black.withAlpha(60),
+                  ),
+                ],
+              ),
+              child: Image.network(webtoon.thumb),
+            ),
+            SizedBox(height: 10),
+            Text(webtoon.title, style: TextStyle(fontSize: 22)),
+          ],
+        );
+      },
+      separatorBuilder: (context, index) => SizedBox(width: 20),
     );
   }
 }
