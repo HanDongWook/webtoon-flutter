@@ -13,4 +13,8 @@ class UrlConfig {
   static String getLatestEpisodesById(String id) {
     return '$_baseUrl/$id/episodes';
   }
+
+  static String getEpisodeById(String webtoonId, String episodeId) {
+    return 'https://comic.naver.com/webtoon/detail?titleId=$webtoonId&no=$episodeId';
+  }
 }
